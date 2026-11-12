@@ -1,0 +1,3702 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ConnectSphere</title>
+
+<style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+:root{
+    --primary:#6c5ce7;
+    --secondary:#8e7dff;
+    --bg:#f4f5fb;
+    --card:#ffffff;
+    --text:#222;
+    --muted:#777;
+    --border:#e5e5e5;
+    --danger:#e74c3c;
+    --success:#20bf6b;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    transition:.3s;
+}
+
+button{
+    border:none;
+    cursor:pointer;
+}
+
+input,
+textarea{
+    outline:none;
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+#authScreen{
+
+    min-height:100vh;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #5f55e8,
+            #9b59b6
+        );
+}
+
+.authBox{
+
+    width:400px;
+    max-width:92%;
+
+    background:white;
+
+    padding:40px;
+
+    border-radius:25px;
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.25);
+
+    text-align:center;
+}
+
+.brand{
+
+    font-size:36px;
+    font-weight:bold;
+
+    background:
+        linear-gradient(
+            90deg,
+            #6c5ce7,
+            #e84393
+        );
+
+    -webkit-background-clip:text;
+    color:transparent;
+
+    margin-bottom:8px;
+}
+
+.authSubtitle{
+    color:#777;
+    margin-bottom:25px;
+}
+
+.authInput{
+
+    width:100%;
+
+    padding:14px;
+
+    border:1px solid #ddd;
+
+    border-radius:12px;
+
+    margin:8px 0;
+}
+
+.primaryBtn{
+
+    width:100%;
+
+    padding:14px;
+
+    background:var(--primary);
+
+    color:white;
+
+    border-radius:12px;
+
+    font-size:16px;
+
+    margin-top:10px;
+}
+
+.primaryBtn:hover{
+    background:#5749d6;
+}
+
+.authSwitch{
+
+    margin-top:20px;
+    color:var(--primary);
+    cursor:pointer;
+}
+
+
+/* =========================================================
+   APPLICATION
+========================================================= */
+
+#app{
+    display:none;
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.topbar{
+
+    height:70px;
+
+    background:var(--card);
+
+    border-bottom:1px solid var(--border);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 4%;
+
+    position:sticky;
+
+    top:0;
+
+    z-index:1000;
+}
+
+.logo{
+
+    font-size:25px;
+    font-weight:bold;
+
+    color:var(--primary);
+}
+
+.searchBox{
+
+    width:350px;
+
+    padding:11px 18px;
+
+    border-radius:25px;
+
+    border:1px solid var(--border);
+
+    background:var(--bg);
+}
+
+.topIcons{
+
+    display:flex;
+
+    gap:20px;
+
+    font-size:21px;
+}
+
+.topIcons span{
+    cursor:pointer;
+}
+
+
+/* =========================================================
+   LAYOUT
+========================================================= */
+
+.layout{
+
+    max-width:1450px;
+
+    margin:25px auto;
+
+    display:grid;
+
+    grid-template-columns:
+        230px
+        minmax(400px,1fr)
+        290px;
+
+    gap:25px;
+
+    padding:0 20px;
+}
+
+
+/* =========================================================
+   LEFT SIDEBAR
+========================================================= */
+
+.sidebar{
+
+    background:var(--card);
+
+    border-radius:18px;
+
+    padding:15px;
+
+    height:max-content;
+
+    position:sticky;
+
+    top:90px;
+}
+
+.menu{
+
+    padding:14px;
+
+    border-radius:12px;
+
+    margin:4px 0;
+
+    cursor:pointer;
+
+    display:flex;
+
+    gap:12px;
+
+    align-items:center;
+}
+
+.menu:hover,
+.menu.active{
+
+    background:#eeeaff;
+
+    color:var(--primary);
+
+    font-weight:bold;
+}
+
+
+/* =========================================================
+   PAGES
+========================================================= */
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+
+/* =========================================================
+   STORIES
+========================================================= */
+
+.stories{
+
+    background:var(--card);
+
+    padding:15px;
+
+    border-radius:18px;
+
+    display:flex;
+
+    gap:14px;
+
+    overflow:auto;
+
+    margin-bottom:20px;
+}
+
+.story{
+
+    min-width:70px;
+
+    text-align:center;
+
+    cursor:pointer;
+}
+
+.storyAvatar{
+
+    width:65px;
+    height:65px;
+
+    border-radius:50%;
+
+    padding:3px;
+
+    background:
+        linear-gradient(
+            45deg,
+            #f9ce34,
+            #ee2a7b,
+            #6228d7
+        );
+}
+
+.storyAvatar div{
+
+    width:100%;
+    height:100%;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:var(--primary);
+
+    color:white;
+
+    font-weight:bold;
+
+    border:3px solid white;
+}
+
+.story small{
+    color:var(--muted);
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.card{
+
+    background:var(--card);
+
+    padding:20px;
+
+    border-radius:18px;
+
+    margin-bottom:20px;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,.04);
+}
+
+
+/* =========================================================
+   CREATE POST
+========================================================= */
+
+.createTop{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+}
+
+.userAvatar{
+
+    width:45px;
+    height:45px;
+
+    border-radius:50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6c5ce7,
+            #e84393
+        );
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-weight:bold;
+}
+
+.postInput{
+
+    flex:1;
+
+    padding:13px;
+
+    background:var(--bg);
+
+    border:none;
+
+    border-radius:25px;
+
+    cursor:pointer;
+}
+
+.createActions{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-top:15px;
+}
+
+.createActions button{
+
+    flex:1;
+
+    padding:10px;
+
+    border-radius:10px;
+
+    background:var(--bg);
+}
+
+
+/* =========================================================
+   POST
+========================================================= */
+
+.post{
+
+    background:var(--card);
+
+    border-radius:18px;
+
+    margin-bottom:20px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,.04);
+}
+
+.postHeader{
+
+    padding:17px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+}
+
+.postUser{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+}
+
+.postUser small{
+    color:var(--muted);
+}
+
+.postMenu{
+    font-size:22px;
+    cursor:pointer;
+}
+
+.postBody{
+
+    padding:0 17px 15px;
+
+    line-height:1.6;
+}
+
+.postImage{
+
+    width:100%;
+
+    max-height:500px;
+
+    object-fit:cover;
+
+    display:block;
+}
+
+.postStats{
+
+    padding:10px 17px;
+
+    color:var(--muted);
+
+    border-bottom:1px solid var(--border);
+}
+
+.postActions{
+
+    display:flex;
+
+    padding:8px 10px;
+}
+
+.postActions button{
+
+    flex:1;
+
+    padding:12px;
+
+    background:none;
+
+    color:var(--muted);
+
+    border-radius:10px;
+}
+
+.postActions button:hover{
+    background:var(--bg);
+}
+
+.liked{
+    color:#e74c3c !important;
+}
+
+.saved{
+    color:var(--primary) !important;
+}
+
+
+/* =========================================================
+   COMMENTS
+========================================================= */
+
+.comments{
+
+    padding:12px 17px;
+
+    border-top:1px solid var(--border);
+
+}
+
+.commentInput{
+
+    display:flex;
+
+    gap:8px;
+
+    margin-top:10px;
+}
+
+.commentInput input{
+
+    flex:1;
+
+    padding:10px;
+
+    border-radius:20px;
+
+    border:1px solid var(--border);
+}
+
+.commentInput button{
+
+    background:var(--primary);
+
+    color:white;
+
+    padding:8px 15px;
+
+    border-radius:20px;
+}
+
+
+/* =========================================================
+   RIGHT SIDEBAR
+========================================================= */
+
+.rightCard{
+
+    background:var(--card);
+
+    border-radius:18px;
+
+    padding:20px;
+
+    margin-bottom:20px;
+}
+
+.person{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin:15px 0;
+}
+
+.personInfo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+}
+
+.followBtn{
+
+    padding:7px 12px;
+
+    border-radius:8px;
+
+    background:var(--primary);
+
+    color:white;
+}
+
+
+/* =========================================================
+   EXPLORE
+========================================================= */
+
+.exploreSearch{
+
+    width:100%;
+
+    padding:14px;
+
+    border-radius:12px;
+
+    border:1px solid var(--border);
+
+    margin-bottom:20px;
+}
+
+.trends{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:15px;
+}
+
+.trend{
+
+    padding:25px;
+
+    border-radius:15px;
+
+    color:white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6c5ce7,
+            #e84393
+        );
+
+    cursor:pointer;
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+.cover{
+
+    height:190px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6c5ce7,
+            #e84393
+        );
+
+    border-radius:
+        18px 18px 0 0;
+}
+
+.profileCard{
+
+    background:var(--card);
+
+    text-align:center;
+
+    padding:25px;
+
+    border-radius:
+        0 0 18px 18px;
+}
+
+.profileAvatar{
+
+    width:100px;
+    height:100px;
+
+    margin:
+        -75px auto 15px;
+
+    border-radius:50%;
+
+    background:var(--primary);
+
+    border:5px solid var(--card);
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:35px;
+
+    font-weight:bold;
+}
+
+.profileStats{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:60px;
+
+    margin:25px 0;
+}
+
+
+/* =========================================================
+   MESSAGES
+========================================================= */
+
+.chatList{
+
+    background:var(--card);
+
+    border-radius:18px;
+
+    overflow:hidden;
+}
+
+.chatUser{
+
+    padding:18px;
+
+    border-bottom:1px solid var(--border);
+
+    cursor:pointer;
+}
+
+.chatUser:hover{
+
+    background:var(--bg);
+}
+
+.chatWindow{
+
+    background:var(--card);
+
+    border-radius:18px;
+
+    margin-top:20px;
+
+    padding:20px;
+}
+
+.chatMessages{
+
+    height:300px;
+
+    overflow:auto;
+
+    padding:10px;
+}
+
+.message{
+
+    padding:10px 15px;
+
+    border-radius:15px;
+
+    margin:8px 0;
+
+    max-width:70%;
+
+    background:var(--bg);
+}
+
+.myMessage{
+
+    margin-left:auto;
+
+    background:var(--primary);
+
+    color:white;
+}
+
+.chatInput{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-top:15px;
+}
+
+.chatInput input{
+
+    flex:1;
+
+    padding:12px;
+
+    border-radius:20px;
+
+    border:1px solid var(--border);
+}
+
+.chatInput button{
+
+    background:var(--primary);
+
+    color:white;
+
+    padding:10px 20px;
+
+    border-radius:20px;
+}
+
+
+/* =========================================================
+   NOTIFICATIONS
+========================================================= */
+
+.notification{
+
+    background:var(--card);
+
+    padding:18px;
+
+    border-radius:15px;
+
+    margin-bottom:10px;
+
+    display:flex;
+
+    gap:15px;
+}
+
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+.setting{
+
+    background:var(--card);
+
+    padding:20px;
+
+    border-radius:15px;
+
+    margin-bottom:12px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+}
+
+.toggle{
+
+    width:50px;
+    height:25px;
+
+    background:#bbb;
+
+    border-radius:20px;
+
+    position:relative;
+
+    cursor:pointer;
+}
+
+.toggle::after{
+
+    content:"";
+
+    width:21px;
+    height:21px;
+
+    background:white;
+
+    border-radius:50%;
+
+    position:absolute;
+
+    top:2px;
+    left:2px;
+
+    transition:.2s;
+}
+
+.toggle.on{
+    background:var(--primary);
+}
+
+.toggle.on::after{
+    left:27px;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+        rgba(0,0,0,.6);
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    z-index:2000;
+}
+
+.modalBox{
+
+    width:500px;
+
+    max-width:92%;
+
+    background:var(--card);
+
+    padding:25px;
+
+    border-radius:20px;
+}
+
+.modalBox textarea{
+
+    width:100%;
+
+    min-height:150px;
+
+    padding:15px;
+
+    border:1px solid var(--border);
+
+    border-radius:12px;
+
+    resize:none;
+}
+
+.modalButtons{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-top:15px;
+}
+
+.modalButtons button{
+
+    flex:1;
+
+    padding:12px;
+
+    border-radius:10px;
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+.dark{
+
+    --bg:#111218;
+    --card:#1d1e27;
+    --text:#f5f5f5;
+    --border:#333440;
+    --muted:#aaa;
+}
+
+.dark .menu:hover,
+.dark .menu.active{
+
+    background:#302b52;
+}
+
+.dark .postInput{
+
+    background:#292a34;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1100px){
+
+    .layout{
+
+        grid-template-columns:
+            200px 1fr;
+    }
+
+    .rightSidebar{
+        display:none;
+    }
+
+}
+
+@media(max-width:700px){
+
+    .topbar{
+
+        height:auto;
+
+        padding:12px;
+
+        flex-wrap:wrap;
+
+        gap:10px;
+    }
+
+    .searchBox{
+
+        order:3;
+
+        width:100%;
+    }
+
+    .layout{
+
+        display:block;
+
+        padding:10px;
+    }
+
+    .sidebar{
+
+        position:static;
+
+        margin-bottom:15px;
+    }
+
+    .rightSidebar{
+
+        display:none;
+    }
+
+    .trends{
+
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     AUTHENTICATION
+========================================================= -->
+
+<div id="authScreen">
+
+    <div class="authBox">
+
+        <div class="brand">
+            ConnectSphere
+        </div>
+
+        <p class="authSubtitle">
+            Connect • Share • Discover
+        </p>
+
+
+        <div id="loginForm">
+
+            <input
+                id="loginUsername"
+                class="authInput"
+                placeholder="Username or email">
+
+            <input
+                id="loginPassword"
+                class="authInput"
+                type="password"
+                placeholder="Password">
+
+            <button
+                class="primaryBtn"
+                onclick="login()">
+
+                Login
+
+            </button>
+
+            <p
+                class="authSwitch"
+                onclick="showSignup()">
+
+                Create a new account
+
+            </p>
+
+        </div>
+
+
+        <div
+            id="signupForm"
+            style="display:none;">
+
+            <input
+                id="signupName"
+                class="authInput"
+                placeholder="Full name">
+
+            <input
+                id="signupUsername"
+                class="authInput"
+                placeholder="Username">
+
+            <input
+                id="signupPassword"
+                class="authInput"
+                type="password"
+                placeholder="Password">
+
+            <button
+                class="primaryBtn"
+                onclick="signup()">
+
+                Create Account
+
+            </button>
+
+            <p
+                class="authSwitch"
+                onclick="showLogin()">
+
+                Already have an account? Login
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     APP
+========================================================= -->
+
+<div id="app">
+
+
+<!-- TOP BAR -->
+
+<header class="topbar">
+
+    <div class="logo">
+        ConnectSphere
+    </div>
+
+
+    <input
+        id="globalSearch"
+        class="searchBox"
+        placeholder="Search people, posts and topics..."
+        onkeyup="globalSearch()">
+
+
+    <div class="topIcons">
+
+        <span
+            onclick="showPage('notifications')">
+
+            🔔
+
+        </span>
+
+        <span
+            onclick="showPage('messages')">
+
+            💬
+
+        </span>
+
+        <span
+            onclick="toggleDarkMode()">
+
+            🌙
+
+        </span>
+
+    </div>
+
+</header>
+
+
+
+<div class="layout">
+
+
+<!-- =========================================================
+     LEFT MENU
+========================================================= -->
+
+<aside class="sidebar">
+
+    <div
+        class="menu active"
+        onclick="showPage('home')">
+
+        🏠 Home
+
+    </div>
+
+
+    <div
+        class="menu"
+        onclick="showPage('explore')">
+
+        🔍 Explore
+
+    </div>
+
+
+    <div
+        class="menu"
+        onclick="showPage('friends')">
+
+        👥 Friends
+
+    </div>
+
+
+    <div
+        class="menu"
+        onclick="showPage('messages')">
+
+        💬 Messages
+
+    </div>
+
+
+    <div
+        class="menu"
+        onclick="showPage('notifications')">
+
+        🔔 Notifications
+
+    </div>
+
+
+    <div
+        class="menu"
+        onclick="showPage('saved')">
+
+        🔖 Saved
+
+    </div>
+
+
+    <div
+        class="menu"
+        onclick="showPage('profile')">
+
+        👤 Profile
+
+    </div>
+
+
+    <div
+        class="menu"
+        onclick="showPage('settings')">
+
+        ⚙️ Settings
+
+    </div>
+
+
+    <hr>
+
+
+    <div
+        class="menu"
+        onclick="logout()">
+
+        🚪 Logout
+
+    </div>
+
+</aside>
+
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main>
+
+
+<!-- =========================================================
+     HOME
+========================================================= -->
+
+<section
+    id="home"
+    class="page active">
+
+
+    <!-- STORIES -->
+
+    <div class="stories">
+
+        <div class="story">
+
+            <div class="storyAvatar">
+
+                <div>+</div>
+
+            </div>
+
+            <small>
+                Your story
+            </small>
+
+        </div>
+
+
+        <div class="story">
+
+            <div class="storyAvatar">
+
+                <div>R</div>
+
+            </div>
+
+            <small>
+                Rahul
+            </small>
+
+        </div>
+
+
+        <div class="story">
+
+            <div class="storyAvatar">
+
+                <div>A</div>
+
+            </div>
+
+            <small>
+                Ananya
+            </small>
+
+        </div>
+
+
+        <div class="story">
+
+            <div class="storyAvatar">
+
+                <div>P</div>
+
+            </div>
+
+            <small>
+                Priya
+            </small>
+
+        </div>
+
+
+        <div class="story">
+
+            <div class="storyAvatar">
+
+                <div>S</div>
+
+            </div>
+
+            <small>
+                Sneha
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <!-- CREATE POST -->
+
+    <div class="card">
+
+        <div class="createTop">
+
+            <div class="userAvatar"
+                 id="createAvatar">
+
+                U
+
+            </div>
+
+            <input
+                class="postInput"
+                placeholder="What's on your mind?"
+                onclick="openPostModal()">
+
+        </div>
+
+
+        <div class="createActions">
+
+            <button
+                onclick="openPostModal()">
+
+                📷 Photo
+
+            </button>
+
+            <button
+                onclick="openPostModal()">
+
+                🎥 Video
+
+            </button>
+
+            <button
+                onclick="openPostModal()">
+
+                😊 Feeling
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- POSTS CONTAINER -->
+
+    <div id="postsContainer">
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     EXPLORE
+========================================================= -->
+
+<section
+    id="explore"
+    class="page">
+
+    <h2>
+        Explore
+    </h2>
+
+    <br>
+
+    <input
+        id="exploreSearch"
+        class="exploreSearch"
+        placeholder="Search topics..."
+        onkeyup="filterExplore()">
+
+
+    <h3>
+        🔥 Trending
+    </h3>
+
+    <br>
+
+
+    <div class="trends">
+
+        <div
+            class="trend"
+            onclick="searchTopic('Technology')">
+
+            💻 Technology
+
+            <br><br>
+
+            125K posts
+
+        </div>
+
+
+        <div
+            class="trend"
+            onclick="searchTopic('Artificial Intelligence')">
+
+            🤖 Artificial Intelligence
+
+            <br><br>
+
+            98K posts
+
+        </div>
+
+
+        <div
+            class="trend"
+            onclick="searchTopic('Programming')">
+
+            👨‍💻 Programming
+
+            <br><br>
+
+            75K posts
+
+        </div>
+
+
+        <div
+            class="trend"
+            onclick="searchTopic('Travel')">
+
+            ✈️ Travel
+
+            <br><br>
+
+            62K posts
+
+        </div>
+
+
+        <div
+            class="trend"
+            onclick="searchTopic('Education')">
+
+            📚 Education
+
+            <br><br>
+
+            51K posts
+
+        </div>
+
+
+        <div
+            class="trend"
+            onclick="searchTopic('Music')">
+
+            🎵 Music
+
+            <br><br>
+
+            43K posts
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     FRIENDS
+========================================================= -->
+
+<section
+    id="friends"
+    class="page">
+
+    <h2>
+        Friends
+    </h2>
+
+    <br>
+
+
+    <div class="card">
+
+        <h3>
+            People You May Know
+        </h3>
+
+
+        <div id="peopleList">
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     MESSAGES
+========================================================= -->
+
+<section
+    id="messages"
+    class="page">
+
+    <h2>
+        Messages
+    </h2>
+
+    <br>
+
+
+    <div class="chatList">
+
+        <div
+            class="chatUser"
+            onclick="openChat('Rahul Kumar')">
+
+            👤 <b>Rahul Kumar</b>
+
+            <br>
+
+            <small>
+                Hey! How are you?
+            </small>
+
+        </div>
+
+
+        <div
+            class="chatUser"
+            onclick="openChat('Ananya Sharma')">
+
+            👤 <b>Ananya Sharma</b>
+
+            <br>
+
+            <small>
+                Did you complete the project?
+            </small>
+
+        </div>
+
+
+        <div
+            class="chatUser"
+            onclick="openChat('Priya Reddy')">
+
+            👤 <b>Priya Reddy</b>
+
+            <br>
+
+            <small>
+                Nice post!
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="chatWindow"
+        class="chatWindow"
+        style="display:none;">
+
+        <h3 id="chatTitle">
+            Chat
+        </h3>
+
+        <br>
+
+
+        <div
+            id="chatMessages"
+            class="chatMessages">
+
+        </div>
+
+
+        <div class="chatInput">
+
+            <input
+                id="chatInput"
+                placeholder="Write a message..."
+                onkeydown="chatEnter(event)">
+
+            <button
+                onclick="sendChat()">
+
+                Send
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     NOTIFICATIONS
+========================================================= -->
+
+<section
+    id="notifications"
+    class="page">
+
+    <h2>
+        Notifications
+    </h2>
+
+    <br>
+
+
+    <div
+        id="notificationsList">
+
+        <div class="notification">
+
+            ❤️
+
+            <div>
+
+                <b>Rahul Kumar</b>
+                liked your post.
+
+                <br>
+
+                <small>
+                    5 minutes ago
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <div class="notification">
+
+            💬
+
+            <div>
+
+                <b>Ananya Sharma</b>
+                commented on your post.
+
+                <br>
+
+                <small>
+                    20 minutes ago
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <div class="notification">
+
+            👥
+
+            <div>
+
+                <b>Priya Reddy</b>
+                started following you.
+
+                <br>
+
+                <small>
+                    1 hour ago
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     SAVED
+========================================================= -->
+
+<section
+    id="saved"
+    class="page">
+
+    <h2>
+        🔖 Saved Posts
+    </h2>
+
+    <br>
+
+    <div
+        id="savedPosts">
+
+        <div class="card">
+
+            You have no saved posts yet.
+
+            <br><br>
+
+            Save posts from your feed
+            to find them here.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     PROFILE
+========================================================= -->
+
+<section
+    id="profile"
+    class="page">
+
+    <h2>
+        My Profile
+    </h2>
+
+    <br>
+
+
+    <div class="cover"></div>
+
+
+    <div class="profileCard">
+
+        <div
+            class="profileAvatar"
+            id="profileAvatar">
+
+            U
+
+        </div>
+
+
+        <h2 id="profileName">
+            User
+        </h2>
+
+
+        <p id="profileUsername">
+            @user
+        </p>
+
+
+        <br>
+
+
+        <p>
+            Welcome to my ConnectSphere profile.
+            I love technology, creativity and learning.
+        </p>
+
+
+        <div class="profileStats">
+
+            <div>
+
+                <b id="postCount">
+                    0
+                </b>
+
+                <br>
+
+                Posts
+
+            </div>
+
+
+            <div>
+
+                <b>
+                    450
+                </b>
+
+                <br>
+
+                Followers
+
+            </div>
+
+
+            <div>
+
+                <b>
+                    320
+                </b>
+
+                <br>
+
+                Following
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="followBtn"
+            onclick="editProfile()">
+
+            Edit Profile
+
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     SETTINGS
+========================================================= -->
+
+<section
+    id="settings"
+    class="page">
+
+    <h2>
+        Settings
+    </h2>
+
+    <br>
+
+
+    <div class="setting">
+
+        <div>
+
+            <b>
+                Dark Mode
+            </b>
+
+            <br>
+
+            <small>
+                Change application appearance.
+            </small>
+
+        </div>
+
+
+        <div
+            id="darkToggle"
+            class="toggle"
+            onclick="toggleDarkMode()">
+
+        </div>
+
+    </div>
+
+
+    <div class="setting">
+
+        <div>
+
+            <b>
+                Private Account
+            </b>
+
+            <br>
+
+            <small>
+                Only followers can see your posts.
+            </small>
+
+        </div>
+
+
+        <div
+            class="toggle"
+            onclick="this.classList.toggle('on')">
+
+        </div>
+
+    </div>
+
+
+    <div class="setting">
+
+        <div>
+
+            <b>
+                Notifications
+            </b>
+
+            <br>
+
+            <small>
+                Receive activity notifications.
+            </small>
+
+        </div>
+
+
+        <div
+            class="toggle on"
+            onclick="this.classList.toggle('on')">
+
+        </div>
+
+    </div>
+
+
+    <div class="setting">
+
+        <div>
+
+            <b>
+                Online Status
+            </b>
+
+            <br>
+
+            <small>
+                Show when you are online.
+            </small>
+
+        </div>
+
+
+        <div
+            class="toggle on"
+            onclick="this.classList.toggle('on')">
+
+        </div>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+
+<!-- =========================================================
+     RIGHT SIDEBAR
+========================================================= -->
+
+<aside class="rightSidebar">
+
+
+    <div class="rightCard">
+
+        <h3>
+            People You May Know
+        </h3>
+
+        <div id="rightPeople">
+
+        </div>
+
+    </div>
+
+
+    <div class="rightCard">
+
+        <h3>
+            🔥 Trending
+        </h3>
+
+        <br>
+
+        <p>
+            #Technology
+        </p>
+
+        <br>
+
+        <p>
+            #AI
+        </p>
+
+        <br>
+
+        <p>
+            #Coding
+        </p>
+
+        <br>
+
+        <p>
+            #Education
+        </p>
+
+        <br>
+
+        <p>
+            #Travel
+        </p>
+
+    </div>
+
+
+    <div class="rightCard">
+
+        <h3>
+            ConnectSphere
+        </h3>
+
+        <br>
+
+        <small>
+
+            Connect with people,
+            share your thoughts,
+            discover new ideas
+            and explore the world.
+
+        </small>
+
+        <br><br>
+
+        <small>
+            © 2026 ConnectSphere
+        </small>
+
+    </div>
+
+</aside>
+
+
+</div>
+
+</div>
+
+
+
+<!-- =========================================================
+     CREATE POST MODAL
+========================================================= -->
+
+<div
+    id="postModal"
+    class="modal">
+
+    <div class="modalBox">
+
+        <h2>
+            Create Post
+        </h2>
+
+        <br>
+
+
+        <textarea
+            id="newPostText"
+            placeholder="What's on your mind?">
+        </textarea>
+
+
+        <br><br>
+
+
+        <input
+            id="imageInput"
+            type="file"
+            accept="image/*">
+
+
+        <div class="modalButtons">
+
+            <button
+                onclick="closePostModal()">
+
+                Cancel
+
+            </button>
+
+
+            <button
+                style="background:#6c5ce7;color:white;"
+                onclick="publishPost()">
+
+                Publish
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+/* =========================================================
+   DATA
+========================================================= */
+
+let currentUser =
+    JSON.parse(
+        localStorage.getItem("currentUser")
+    );
+
+
+let users =
+    JSON.parse(
+        localStorage.getItem("users")
+    ) || [];
+
+
+let posts =
+    JSON.parse(
+        localStorage.getItem("posts")
+    ) || [];
+
+
+let saved =
+    JSON.parse(
+        localStorage.getItem("saved")
+    ) || [];
+
+
+let chats =
+    JSON.parse(
+        localStorage.getItem("chats")
+    ) || {};
+
+
+/* =========================================================
+   DEFAULT POSTS
+========================================================= */
+
+if(posts.length === 0){
+
+    posts = [
+
+        {
+            id:1,
+            user:"Rahul Kumar",
+            username:"rahul",
+            text:
+            "Just completed my new web development project! Learning new technologies every day. #Technology #Coding",
+            likes:24,
+            comments:[],
+            liked:false,
+            saved:false,
+            time:"2 hours ago"
+        },
+
+        {
+            id:2,
+            user:"Ananya Sharma",
+            username:"ananya",
+            text:
+            "Having a wonderful day with my friends! ❤️ #Travel #Friends",
+            likes:56,
+            comments:[],
+            liked:false,
+            saved:false,
+            time:"5 hours ago"
+        },
+
+        {
+            id:3,
+            user:"Priya Reddy",
+            username:"priya",
+            text:
+            "Never stop learning. Every small step takes you closer to your goals. 📚 #Education",
+            likes:91,
+            comments:[],
+            liked:false,
+            saved:false,
+            time:"Yesterday"
+        }
+
+    ];
+
+    savePosts();
+
+}
+
+
+/* =========================================================
+   STORAGE
+========================================================= */
+
+function savePosts(){
+
+    localStorage.setItem(
+        "posts",
+        JSON.stringify(posts)
+    );
+
+}
+
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+function showSignup(){
+
+    document.getElementById("loginForm")
+        .style.display="none";
+
+    document.getElementById("signupForm")
+        .style.display="block";
+
+}
+
+
+function showLogin(){
+
+    document.getElementById("signupForm")
+        .style.display="none";
+
+    document.getElementById("loginForm")
+        .style.display="block";
+
+}
+
+
+function signup(){
+
+    let name =
+        document.getElementById("signupName")
+        .value.trim();
+
+    let username =
+        document.getElementById("signupUsername")
+        .value.trim();
+
+    let password =
+        document.getElementById("signupPassword")
+        .value;
+
+
+    if(!name || !username || !password){
+
+        alert(
+            "Please fill all fields."
+        );
+
+        return;
+
+    }
+
+
+    let exists =
+        users.find(
+            u => u.username === username
+        );
+
+
+    if(exists){
+
+        alert(
+            "Username already exists."
+        );
+
+        return;
+
+    }
+
+
+    let user = {
+
+        name:name,
+        username:username,
+        password:password
+
+    };
+
+
+    users.push(user);
+
+
+    localStorage.setItem(
+        "users",
+        JSON.stringify(users)
+    );
+
+
+    currentUser = user;
+
+
+    localStorage.setItem(
+        "currentUser",
+        JSON.stringify(currentUser)
+    );
+
+
+    startApp();
+
+}
+
+
+function login(){
+
+    let username =
+        document.getElementById("loginUsername")
+        .value.trim();
+
+    let password =
+        document.getElementById("loginPassword")
+        .value;
+
+
+    if(!username || !password){
+
+        alert(
+            "Enter username and password."
+        );
+
+        return;
+
+    }
+
+
+    let user =
+        users.find(
+            u =>
+            (u.username === username ||
+             u.name === username)
+            &&
+            u.password === password
+        );
+
+
+    /*
+       Demo account if no registered
+       account exists.
+    */
+
+    if(!user){
+
+        user = {
+
+            name:username,
+            username:username,
+            password:password
+
+        };
+
+        users.push(user);
+
+        localStorage.setItem(
+            "users",
+            JSON.stringify(users)
+        );
+
+    }
+
+
+    currentUser = user;
+
+
+    localStorage.setItem(
+        "currentUser",
+        JSON.stringify(currentUser)
+    );
+
+
+    startApp();
+
+}
+
+
+function startApp(){
+
+    document.getElementById("authScreen")
+        .style.display="none";
+
+    document.getElementById("app")
+        .style.display="block";
+
+
+    updateProfile();
+
+    renderPosts();
+
+    renderPeople();
+
+}
+
+
+function logout(){
+
+    localStorage.removeItem(
+        "currentUser"
+    );
+
+    location.reload();
+
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+function updateProfile(){
+
+    if(!currentUser)
+        return;
+
+
+    let first =
+        currentUser.name
+        .charAt(0)
+        .toUpperCase();
+
+
+    document.getElementById(
+        "createAvatar"
+    ).innerText=first;
+
+
+    document.getElementById(
+        "profileAvatar"
+    ).innerText=first;
+
+
+    document.getElementById(
+        "profileName"
+    ).innerText=currentUser.name;
+
+
+    document.getElementById(
+        "profileUsername"
+    ).innerText=
+        "@"+currentUser.username;
+
+
+    document.getElementById(
+        "postCount"
+    ).innerText =
+        posts.filter(
+            p =>
+            p.username === currentUser.username
+        ).length;
+
+}
+
+
+function editProfile(){
+
+    let name =
+        prompt(
+            "Enter new name:",
+            currentUser.name
+        );
+
+
+    if(name){
+
+        currentUser.name=name;
+
+        localStorage.setItem(
+            "currentUser",
+            JSON.stringify(currentUser)
+        );
+
+        updateProfile();
+
+        alert(
+            "Profile updated!"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function showPage(page){
+
+    document
+        .querySelectorAll(".page")
+        .forEach(
+            p => p.classList.remove("active")
+        );
+
+
+    document
+        .getElementById(page)
+        .classList.add("active");
+
+
+    document
+        .querySelectorAll(".menu")
+        .forEach(
+            m => m.classList.remove("active")
+        );
+
+
+    window.scrollTo(0,0);
+
+}
+
+
+/* =========================================================
+   RENDER POSTS
+========================================================= */
+
+function renderPosts(){
+
+    let container =
+        document.getElementById(
+            "postsContainer"
+        );
+
+
+    container.innerHTML="";
+
+
+    posts.slice().reverse().forEach(
+        post => {
+
+            let div =
+                document.createElement("div");
+
+
+            div.className="post searchablePost";
+
+
+            let first =
+                post.user
+                .charAt(0)
+                .toUpperCase();
+
+
+            let commentsHTML =
+                post.comments
+                .map(
+                    c =>
+                    `<p>
+                        <b>${c.user}</b> ${c.text}
+                    </p>`
+                )
+                .join("");
+
+
+            div.innerHTML=`
+
+                <div class="postHeader">
+
+                    <div class="postUser">
+
+                        <div class="userAvatar">
+                            ${first}
+                        </div>
+
+                        <div>
+
+                            <b>
+                                ${post.user}
+                            </b>
+
+                            <br>
+
+                            <small>
+                                @${post.username}
+                                · ${post.time}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div
+                        class="postMenu"
+                        onclick="postOptions(${post.id})">
+
+                        ⋮
+
+                    </div>
+
+                </div>
+
+
+                <div class="postBody">
+
+                    ${escapeHTML(post.text)}
+
+                </div>
+
+
+                ${
+                    post.image
+                    ?
+                    `<img
+                        class="postImage"
+                        src="${post.image}">`
+                    :
+                    ""
+                }
+
+
+                <div class="postStats">
+
+                    ❤️ ${post.likes}
+                    &nbsp;&nbsp;
+
+                    💬 ${post.comments.length}
+                    comments
+
+                </div>
+
+
+                <div class="postActions">
+
+                    <button
+                        class="${post.liked ? 'liked':''}"
+                        onclick="toggleLike(${post.id})">
+
+                        ❤️ Like
+
+                    </button>
+
+
+                    <button
+                        onclick="focusComment(${post.id})">
+
+                        💬 Comment
+
+                    </button>
+
+
+                    <button
+                        onclick="sharePost(${post.id})">
+
+                        ↗ Share
+
+                    </button>
+
+
+                    <button
+                        class="${post.saved ? 'saved':''}"
+                        onclick="toggleSave(${post.id})">
+
+                        🔖 Save
+
+                    </button>
+
+                </div>
+
+
+                <div class="comments">
+
+                    ${commentsHTML}
+
+
+                    <div class="commentInput">
+
+                        <input
+                            id="comment-${post.id}"
+                            placeholder="Write a comment...">
+
+                        <button
+                            onclick="addComment(${post.id})">
+
+                            Post
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(div);
+
+        }
+    );
+
+
+    updateProfile();
+
+}
+
+
+/* =========================================================
+   HTML ESCAPE
+========================================================= */
+
+function escapeHTML(text){
+
+    let div =
+        document.createElement("div");
+
+    div.textContent=text;
+
+    return div.innerHTML;
+
+}
+
+
+/* =========================================================
+   LIKE
+========================================================= */
+
+function toggleLike(id){
+
+    let post =
+        posts.find(
+            p => p.id===id
+        );
+
+
+    if(!post)
+        return;
+
+
+    if(post.liked){
+
+        post.likes--;
+
+        post.liked=false;
+
+    }
+
+    else{
+
+        post.likes++;
+
+        post.liked=true;
+
+    }
+
+
+    savePosts();
+
+    renderPosts();
+
+}
+
+
+/* =========================================================
+   COMMENT
+========================================================= */
+
+function addComment(id){
+
+    let input =
+        document.getElementById(
+            "comment-"+id
+        );
+
+
+    let text =
+        input.value.trim();
+
+
+    if(!text)
+        return;
+
+
+    let post =
+        posts.find(
+            p => p.id===id
+        );
+
+
+    post.comments.push({
+
+        user:
+            currentUser.name,
+
+        text:text
+
+    });
+
+
+    savePosts();
+
+    renderPosts();
+
+}
+
+
+function focusComment(id){
+
+    let input =
+        document.getElementById(
+            "comment-"+id
+        );
+
+
+    if(input){
+
+        input.focus();
+
+    }
+
+}
+
+
+/* =========================================================
+   SHARE
+========================================================= */
+
+function sharePost(id){
+
+    let post =
+        posts.find(
+            p => p.id===id
+        );
+
+
+    navigator.clipboard
+        ?.writeText(
+            post.text
+        );
+
+
+    alert(
+        "Post link copied! You can share it."
+    );
+
+}
+
+
+/* =========================================================
+   SAVE
+========================================================= */
+
+function toggleSave(id){
+
+    let post =
+        posts.find(
+            p => p.id===id
+        );
+
+
+    post.saved =
+        !post.saved;
+
+
+    if(post.saved){
+
+        if(!saved.includes(id))
+            saved.push(id);
+
+    }
+
+    else{
+
+        saved =
+            saved.filter(
+                x => x!==id
+            );
+
+    }
+
+
+    localStorage.setItem(
+        "saved",
+        JSON.stringify(saved)
+    );
+
+
+    savePosts();
+
+    renderPosts();
+
+    renderSaved();
+
+}
+
+
+function renderSaved(){
+
+    let box =
+        document.getElementById(
+            "savedPosts"
+        );
+
+
+    let savedPosts =
+        posts.filter(
+            p => saved.includes(p.id)
+        );
+
+
+    if(savedPosts.length===0){
+
+        box.innerHTML=`
+
+            <div class="card">
+
+                You have no saved posts.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    box.innerHTML =
+        savedPosts
+        .map(
+            p =>
+            `<div class="card">
+
+                <b>${p.user}</b>
+
+                <br><br>
+
+                ${escapeHTML(p.text)}
+
+            </div>`
+        )
+        .join("");
+
+}
+
+
+/* =========================================================
+   CREATE POST
+========================================================= */
+
+function openPostModal(){
+
+    document.getElementById(
+        "postModal"
+    ).style.display="flex";
+
+}
+
+
+function closePostModal(){
+
+    document.getElementById(
+        "postModal"
+    ).style.display="none";
+
+}
+
+
+function publishPost(){
+
+    let text =
+        document.getElementById(
+            "newPostText"
+        ).value.trim();
+
+
+    let file =
+        document.getElementById(
+            "imageInput"
+        ).files[0];
+
+
+    if(!text && !file){
+
+        alert(
+            "Write something or select an image."
+        );
+
+        return;
+
+    }
+
+
+    if(file){
+
+        let reader =
+            new FileReader();
+
+
+        reader.onload=function(e){
+
+            createNewPost(
+                text,
+                e.target.result
+            );
+
+        };
+
+
+        reader.readAsDataURL(file);
+
+    }
+
+    else{
+
+        createNewPost(
+            text,
+            null
+        );
+
+    }
+
+}
+
+
+function createNewPost(text,image){
+
+    let newPost={
+
+        id:
+            Date.now(),
+
+        user:
+            currentUser.name,
+
+        username:
+            currentUser.username,
+
+        text:
+            text,
+
+        image:
+            image,
+
+        likes:0,
+
+        comments:[],
+
+        liked:false,
+
+        saved:false,
+
+        time:"Just now"
+
+    };
+
+
+    posts.push(newPost);
+
+    savePosts();
+
+    renderPosts();
+
+    closePostModal();
+
+
+    document.getElementById(
+        "newPostText"
+    ).value="";
+
+
+    document.getElementById(
+        "imageInput"
+    ).value="";
+
+
+    alert(
+        "Your post has been published!"
+    );
+
+}
+
+
+/* =========================================================
+   POST OPTIONS
+========================================================= */
+
+function postOptions(id){
+
+    let post =
+        posts.find(
+            p => p.id===id
+        );
+
+
+    let action =
+        prompt(
+            "Type: delete or cancel"
+        );
+
+
+    if(
+        action &&
+        action.toLowerCase()==="delete"
+    ){
+
+        if(
+            post.username ===
+            currentUser.username
+        ){
+
+            posts =
+                posts.filter(
+                    p => p.id!==id
+                );
+
+            savePosts();
+
+            renderPosts();
+
+            alert(
+                "Post deleted."
+            );
+
+        }
+
+        else{
+
+            alert(
+                "You can only delete your own posts."
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   PEOPLE
+========================================================= */
+
+let people=[
+
+    {
+        name:"Priya Reddy",
+        username:"priya"
+    },
+
+    {
+        name:"Arjun Singh",
+        username:"arjun"
+    },
+
+    {
+        name:"Sneha Patel",
+        username:"sneha"
+    },
+
+    {
+        name:"Kiran Rao",
+        username:"kiran"
+    }
+
+];
+
+
+function renderPeople(){
+
+    let html="";
+
+
+    people.forEach(
+        p => {
+
+            html += `
+
+                <div class="person">
+
+                    <div class="personInfo">
+
+                        <div class="userAvatar">
+
+                            ${p.name.charAt(0)}
+
+                        </div>
+
+                        <span>
+
+                            ${p.name}
+
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        class="followBtn"
+                        onclick="followUser(this)">
+
+                        Follow
+
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    document.getElementById(
+        "peopleList"
+    ).innerHTML=html;
+
+
+    document.getElementById(
+        "rightPeople"
+    ).innerHTML=html;
+
+}
+
+
+function followUser(button){
+
+    if(
+        button.innerText==="Follow"
+    ){
+
+        button.innerText="Following";
+
+        button.style.background=
+            "#20bf6b";
+
+    }
+
+    else{
+
+        button.innerText="Follow";
+
+        button.style.background=
+            "#6c5ce7";
+
+    }
+
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+function globalSearch(){
+
+    let value =
+        document.getElementById(
+            "globalSearch"
+        ).value.toLowerCase();
+
+
+    if(!value){
+
+        renderPosts();
+
+        return;
+
+    }
+
+
+    showPage("home");
+
+
+    let all =
+        document.querySelectorAll(
+            ".searchablePost"
+        );
+
+
+    all.forEach(
+        post => {
+
+            if(
+                post.innerText
+                .toLowerCase()
+                .includes(value)
+            ){
+
+                post.style.display="block";
+
+            }
+
+            else{
+
+                post.style.display="none";
+
+            }
+
+        }
+    );
+
+}
+
+
+function searchTopic(topic){
+
+    document.getElementById(
+        "globalSearch"
+    ).value=topic;
+
+
+    showPage("home");
+
+    globalSearch();
+
+}
+
+
+function filterExplore(){
+
+    let value =
+        document.getElementById(
+            "exploreSearch"
+        ).value.toLowerCase();
+
+
+    document
+        .querySelectorAll(".trend")
+        .forEach(
+            item => {
+
+                item.style.display =
+                    item.innerText
+                    .toLowerCase()
+                    .includes(value)
+                    ?
+                    "block"
+                    :
+                    "none";
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   CHAT
+========================================================= */
+
+let activeChat="";
+
+
+function openChat(name){
+
+    activeChat=name;
+
+
+    document.getElementById(
+        "chatWindow"
+    ).style.display="block";
+
+
+    document.getElementById(
+        "chatTitle"
+    ).innerText=
+        "Chat with "+name;
+
+
+    renderChat();
+
+}
+
+
+function renderChat(){
+
+    let messages =
+        chats[activeChat] || [];
+
+
+    document.getElementById(
+        "chatMessages"
+    ).innerHTML =
+        messages
+        .map(
+            m =>
+            `<div
+                class="message
+                ${m.mine?'myMessage':''}">
+
+                ${escapeHTML(m.text)}
+
+            </div>`
+        )
+        .join("");
+
+
+    let box =
+        document.getElementById(
+            "chatMessages"
+        );
+
+    box.scrollTop =
+        box.scrollHeight;
+
+}
+
+
+function sendChat(){
+
+    let input =
+        document.getElementById(
+            "chatInput"
+        );
+
+
+    let text =
+        input.value.trim();
+
+
+    if(!text || !activeChat)
+        return;
+
+
+    if(!chats[activeChat])
+        chats[activeChat]=[];
+
+
+    chats[activeChat].push({
+
+        text:text,
+
+        mine:true
+
+    });
+
+
+    localStorage.setItem(
+        "chats",
+        JSON.stringify(chats)
+    );
+
+
+    input.value="";
+
+    renderChat();
+
+}
+
+
+function chatEnter(event){
+
+    if(event.key==="Enter"){
+
+        sendChat();
+
+    }
+
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+function toggleDarkMode(){
+
+    document.body
+        .classList
+        .toggle("dark");
+
+
+    let enabled =
+        document.body
+        .classList
+        .contains("dark");
+
+
+    document.getElementById(
+        "darkToggle"
+    ).classList.toggle(
+        "on",
+        enabled
+    );
+
+
+    localStorage.setItem(
+        "darkMode",
+        enabled
+    );
+
+}
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+if(
+    localStorage.getItem(
+        "darkMode"
+    )==="true"
+){
+
+    document.body
+        .classList
+        .add("dark");
+
+    document.getElementById(
+        "darkToggle"
+    )?.classList.add("on");
+
+}
+
+
+if(currentUser){
+
+    startApp();
+
+}
+
+
+renderSaved();
+
+</script>
+
+</body>
+</html>
+```
